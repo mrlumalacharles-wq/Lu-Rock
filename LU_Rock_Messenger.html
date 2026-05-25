@@ -1,0 +1,311 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LU Rock Messenger</title>
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+body{
+background:linear-gradient(135deg,#dff7ef,#ffffff,#d8f5e8);
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+padding:20px;
+}
+.app{
+width:100%;
+max-width:1200px;
+height:90vh;
+background:white;
+border-radius:25px;
+overflow:hidden;
+display:grid;
+grid-template-columns:350px 1fr;
+box-shadow:0 10px 30px rgba(0,0,0,0.15);
+}
+.sidebar{
+background:#0d7f63;
+color:white;
+display:flex;
+flex-direction:column;
+}
+.header{
+padding:20px;
+display:flex;
+align-items:center;
+gap:15px;
+border-bottom:1px solid rgba(255,255,255,0.1);
+}
+.logo{
+width:60px;
+height:60px;
+border-radius:50%;
+background:white;
+display:flex;
+justify-content:center;
+align-items:center;
+}
+.drum{
+width:40px;
+height:40px;
+border-radius:50%;
+background:orange;
+border:5px solid #0d7f63;
+position:relative;
+}
+.drum::after{
+content:'';
+position:absolute;
+left:0;
+right:0;
+top:50%;
+height:4px;
+background:white;
+transform:translateY(-50%);
+}
+.search{
+padding:15px;
+}
+.search input{
+width:100%;
+padding:12px 15px;
+border:none;
+border-radius:20px;
+outline:none;
+}
+.chat-list{
+overflow-y:auto;
+flex:1;
+}
+.chat{
+padding:15px 20px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+cursor:pointer;
+border-bottom:1px solid rgba(255,255,255,0.08);
+}
+.chat:hover{
+background:rgba(255,255,255,0.08);
+}
+.avatar{
+width:45px;
+height:45px;
+border-radius:50%;
+background:orange;
+display:flex;
+justify-content:center;
+align-items:center;
+font-weight:bold;
+}
+.chat-info{
+display:flex;
+align-items:center;
+gap:15px;
+}
+.unread{
+background:orange;
+width:22px;
+height:22px;
+border-radius:50%;
+display:flex;
+justify-content:center;
+align-items:center;
+font-size:12px;
+}
+.main{
+display:flex;
+flex-direction:column;
+background:#efeae2;
+}
+.main-header{
+background:white;
+padding:15px 20px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+border-bottom:1px solid #ddd;
+}
+.messages{
+flex:1;
+padding:20px;
+overflow-y:auto;
+display:flex;
+flex-direction:column;
+gap:15px;
+}
+.message{
+max-width:60%;
+padding:14px 18px;
+border-radius:18px;
+line-height:1.4;
+}
+.received{
+background:white;
+align-self:flex-start;
+}
+.sent{
+background:#d9fdd3;
+align-self:flex-end;
+}
+.input-area{
+background:white;
+padding:15px;
+display:flex;
+gap:10px;
+border-top:1px solid #ddd;
+}
+.input-area input{
+flex:1;
+padding:14px;
+border:none;
+background:#f2f2f2;
+border-radius:25px;
+outline:none;
+}
+.send-btn{
+background:#0d7f63;
+color:white;
+border:none;
+padding:14px 24px;
+border-radius:25px;
+cursor:pointer;
+font-weight:bold;
+}
+.send-btn:hover{
+background:#0b6e56;
+}
+@media(max-width:800px){
+.app{
+grid-template-columns:1fr;
+}
+.sidebar{
+display:none;
+}
+}
+</style>
+</head>
+<body>
+
+<div class="app">
+
+<div class="sidebar">
+<div class="header">
+<div class="logo">
+<div class="drum"></div>
+</div>
+<div>
+<h1>LU Rock</h1>
+<p>Connect. Chat. Rock.</p>
+</div>
+</div>
+
+<div class="search">
+<input type="text" placeholder="Search chats">
+</div>
+
+<div class="chat-list">
+
+<div class="chat">
+<div class="chat-info">
+<div class="avatar">M</div>
+<div>
+<h3>Moses</h3>
+<p>Are we meeting tonight?</p>
+</div>
+</div>
+<div class="unread">2</div>
+</div>
+
+<div class="chat">
+<div class="chat-info">
+<div class="avatar">S</div>
+<div>
+<h3>Sarah</h3>
+<p>The music files are ready 🎵</p>
+</div>
+</div>
+</div>
+
+<div class="chat">
+<div class="chat-info">
+<div class="avatar">F</div>
+<div>
+<h3>Family Group</h3>
+<p>Dinner at 7pm</p>
+</div>
+</div>
+<div class="unread">4</div>
+</div>
+
+</div>
+</div>
+
+<div class="main">
+
+<div class="main-header">
+<div class="chat-info">
+<div class="avatar">M</div>
+<div>
+<h3>Moses</h3>
+<p>Online</p>
+</div>
+</div>
+
+<div>
+📞 🎥 ⋮
+</div>
+</div>
+
+<div class="messages" id="messages">
+<div class="message received">
+Hey! LU Rock looks amazing 🔥
+</div>
+
+<div class="message sent">
+Thank you! It works like a modern chat app.
+</div>
+
+<div class="message received">
+The drum logo is unique 🥁
+</div>
+</div>
+
+<div class="input-area">
+<input type="text" id="messageInput" placeholder="Type a message">
+<button class="send-btn" onclick="sendMessage()">Send</button>
+</div>
+
+</div>
+
+</div>
+
+<script>
+function sendMessage(){
+const input = document.getElementById('messageInput');
+const messages = document.getElementById('messages');
+
+if(input.value.trim() !== ''){
+const msg = document.createElement('div');
+msg.className = 'message sent';
+msg.textContent = input.value;
+
+messages.appendChild(msg);
+
+input.value = '';
+
+messages.scrollTop = messages.scrollHeight;
+}
+}
+</script>
+
+</body>
+</html>
