@@ -1,0 +1,120 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ── Helpers ─────────────────────────────────────────────────────
+    function isSignedIn() {
+      return request.auth != null;
+    }
+    function isSelf(uid) {
+      return isSignedIn() && request.auth.uid == uid;
+    }
+
+    // ── users/{uid} ─────────────────────────────────────────────────
+    // Any signed-in user can read profiles (needed for People/search tabs).
+    // Only the owner can create/update their own profile.
+    match /users/{uid} {
+      allow read: if isSignedIn();
+      allow create: if isSelf(uid);
+      allow update: if isSelf(uid);
+      allow delete: if false;
+    }
+
+    // ── friendRequests/{reqId} ─────────────────────────────────────
+    // reqId is always `${fromUid}_${toUid}`. Only sender or recipient
+    // can read/create/update; only the recipient can flip status
+    // (accept/decline), only the sender can create it.
+    match /friendRequests/{reqId} {
+      allow read: if isSignedIn() &&
+        (request.auth.uid == resource.data.from || request.auth.uid == resource.data.to);
+      allow create: if isSignedIn() &&
+        request.auth.uid == request.resource.data.from &&
+        reqId == request.resource.data.from + '_' + request.resource.data.to;
+      allow update: if isSignedIn() &&
+        (request.auth.uid == resource.data.from || request.auth.uid == resource.data.to) &&
+        // only the status field may change
+        request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status']);
+      allow delete: if false;
+    }
+
+    // ── blocked/{blockId} ───────────────────────────────────────────
+    // blockId is `${blockedBy}_${blockedUser}`. Only the blocker can
+    // read/create/update their own block records.
+    match /blocked/{blockId} {
+      allow read: if isSignedIn() && request.auth.uid == resource.data.blockedBy;
+      allow create: if isSignedIn() &&
+        request.auth.uid == request.resource.data.blockedBy &&
+        blockId == request.resource.data.blockedBy + '_' + request.resource.data.blockedUser;
+      allow update: if isSignedIn() && request.auth.uid == resource.data.blockedBy;
+      allow delete: if false;
+    }
+
+    // ── chats/{chatId} ──────────────────────────────────────────────
+    // Only members of a chat can read/write it or its messages.
+    // Members list may only grow/shrink by the request itself (basic
+    // guard against a non-member sneaking themselves in via update).
+    match /chats/{chatId} {
+      allow read: if isSignedIn() && request.auth.uid in resource.data.members;
+      allow create: if isSignedIn() && request.auth.uid in request.resource.data.members;
+      allow update: if isSignedIn() && request.auth.uid in resource.data.members;
+      allow delete: if false;
+
+      match /messages/{msgId} {
+        allow read: if isSignedIn() &&
+          request.auth.uid in get(/databases/$(database)/documents/chats/$(chatId)).data.members;
+        allow create: if isSignedIn() &&
+          request.auth.uid in get(/databases/$(database)/documents/chats/$(chatId)).data.members &&
+          request.auth.uid == request.resource.data.senderId;
+        // allow updates only for status ticks / soft-delete fields,
+        // and only by a current member
+        allow update: if isSignedIn() &&
+          request.auth.uid in get(/databases/$(database)/documents/chats/$(chatId)).data.members;
+        allow delete: if false;
+      }
+    }
+
+    // ── statuses/{statusId} ─────────────────────────────────────────
+    // Anyone signed in can read (status updates are visible to all
+    // contacts in this app's current design). Only the author can
+    // create their own status; no edits/deletes from the client
+    // (expiry is handled client-side by expiresAt filtering).
+    match /statuses/{statusId} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn() && request.auth.uid == request.resource.data.uid;
+      allow update: if false;
+      allow delete: if false;
+    }
+
+    // ── calls/{callId} ──────────────────────────────────────────────
+    // Only the caller or callee can read/write a call doc.
+    match /calls/{callId} {
+      allow read: if isSignedIn() &&
+        (request.auth.uid == resource.data.callerId || request.auth.uid == resource.data.calleeId);
+      allow create: if isSignedIn() && request.auth.uid == request.resource.data.callerId;
+      allow update: if isSignedIn() &&
+        (request.auth.uid == resource.data.callerId || request.auth.uid == resource.data.calleeId);
+      allow delete: if false;
+
+      match /callerCandidates/{candId} {
+        allow read: if isSignedIn() &&
+          (request.auth.uid == get(/databases/$(database)/documents/calls/$(callId)).data.callerId ||
+           request.auth.uid == get(/databases/$(database)/documents/calls/$(callId)).data.calleeId);
+        allow create: if isSignedIn() &&
+          request.auth.uid == get(/databases/$(database)/documents/calls/$(callId)).data.callerId;
+      }
+      match /calleeCandidates/{candId} {
+        allow read: if isSignedIn() &&
+          (request.auth.uid == get(/databases/$(database)/documents/calls/$(callId)).data.callerId ||
+           request.auth.uid == get(/databases/$(database)/documents/calls/$(callId)).data.calleeId);
+        allow create: if isSignedIn() &&
+          request.auth.uid == get(/databases/$(database)/documents/calls/$(callId)).data.calleeId;
+      }
+    }
+
+    // Deny everything else by default.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

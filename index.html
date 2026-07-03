@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lum@T v3 – I'm Closer Than You Think</title>
+<!-- System fonts offline safe -->
+<style>body,input,select,button{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;}</style>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- STATUS BAR -->
+<div class="status-bar">
+  <span id="sbTime">9:41</span>
+  <div class="sb-icons"><span>●●●</span><span>WiFi</span><span>🔋</span></div>
+</div>
+
+<!-- ══════════ SPLASH ══════════ -->
+<div id="splash" class="screen active" style="background:#050D1F;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0;overflow:hidden;position:relative;">
+
+  <!-- Animated background rings -->
+  <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;">
+    <div style="width:340px;height:340px;border-radius:50%;border:1px solid rgba(168,85,247,0.12);animation:ringPulse 3s ease-in-out infinite;"></div>
+    <div style="position:absolute;width:260px;height:260px;border-radius:50%;border:1px solid rgba(59,130,246,0.15);animation:ringPulse 3s ease-in-out infinite 0.5s;"></div>
+    <div style="position:absolute;width:180px;height:180px;border-radius:50%;border:1px solid rgba(255,193,7,0.12);animation:ringPulse 3s ease-in-out infinite 1s;"></div>
+  </div>
+
+  <!-- Logo -->
+  <div style="position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;">
+    <div style="width:110px;height:110px;margin-bottom:28px;filter:drop-shadow(0 0 30px rgba(168,85,247,0.5));">
+      <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;">
+        <defs>
+          <linearGradient id="splashGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#A855F7"/>
+            <stop offset="100%" stop-color="#3B82F6"/>
+          </linearGradient>
+        </defs>
+        <circle cx="60" cy="60" r="56" fill="url(#splashGrad)" opacity="0.15"/>
+        <circle cx="60" cy="60" r="56" fill="none" stroke="url(#splashGrad)" stroke-width="2"/>
+        <path d="M30 40 Q30 24 46 24 H76 Q92 24 92 40 V65 Q92 81 76 81 H62 L48 96 L48 81 H46 Q30 81 30 65 Z"
+          fill="none" stroke="#FFC107" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round"/>
+        <circle cx="50" cy="53" r="4.5" fill="#FFC107"/>
+        <circle cx="61" cy="53" r="4.5" fill="#FFC107"/>
+        <circle cx="72" cy="53" r="4.5" fill="#FFC107"/>
+      </svg>
+    </div>
+
+    <!-- Brand name -->
+    <div style="font-family:'Poppins',sans-serif;font-size:42px;font-weight:900;letter-spacing:2px;color:#fff;margin-bottom:6px;">
+      Lum<span style="color:#FFC107;">@</span>T
+    </div>
+    <div style="font-size:14px;color:rgba(255,255,255,0.45);letter-spacing:3px;text-transform:uppercase;margin-bottom:60px;">I'm Closer Than You Think</div>
+
+    <!-- Loading bar -->
+    <div style="width:180px;height:3px;background:rgba(255,255,255,0.08);border-radius:4px;overflow:hidden;margin-bottom:16px;">
+      <div id="splashBar" style="height:100%;width:0%;background:linear-gradient(90deg,#A855F7,#3B82F6);border-radius:4px;transition:width 0.1s linear;"></div>
+    </div>
+    <div style="font-size:12px;color:rgba(255,255,255,0.3);letter-spacing:1px;" id="splashStatus">Loading...</div>
+  </div>
+
+  <!-- Bottom branding -->
+  <div style="position:absolute;bottom:36px;font-size:12px;color:rgba(255,255,255,0.2);text-align:center;letter-spacing:1px;">
+    Digital Link Technologies Uganda 🇺🇬
+  </div>
+</div>
+
+
+<!-- ══════════ LOGIN ══════════ -->
+<div id="login" class="screen" style="background:linear-gradient(180deg,#0A1535 0%,#0D1E40 60%,#0A1020 100%);padding:40px 28px 40px;">
+
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:36px;">
+      <span onclick="showScreen('splash')" style="font-size:22px;color:var(--yellow);cursor:pointer;">←</span>
+      <span style="font-size:15px;color:var(--muted);">Back</span>
+    </div>
+    <div style="display:flex;justify-content:center;margin-bottom:20px;">
+      <svg width="56" height="56" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="60" cy="60" r="58" fill="#0D47A1" stroke="#1565C0" stroke-width="2"/>
+        <path d="M22 38 Q22 22 38 22 H82 Q98 22 98 38 V68 Q98 84 82 84 H68 L54 98 L54 84 H38 Q22 84 22 68 Z" fill="#0A2070" stroke="#FFC107" stroke-width="2.5"/>
+        <circle cx="42" cy="53" r="6" fill="#FFC107"/>
+        <circle cx="60" cy="53" r="6" fill="#FFC107"/>
+        <circle cx="78" cy="53" r="6" fill="#FFC107"/>
+      </svg>
+    </div>
+    <div style="margin-bottom:32px;">
+      <div class="brand-name" style="font-size:28px;margin-bottom:6px;">Welcome back 👋</div>
+      <div style="font-size:14px;color:var(--muted);">Sign in to continue</div>
+    </div>
+    <!-- Fields -->
+    <div class="auth-field-wrap">
+      <label class="auth-label">Phone number or email</label>
+      <input class="auth-input" id="loginEmail" type="text" placeholder="Phone or email">
+    </div>
+    <div class="auth-field-wrap" style="position:relative;">
+      <label class="auth-label">Password</label>
+      <input class="auth-input" id="loginPass" type="password" placeholder="Enter your password">
+      <span class="pass-toggle" onclick="togglePass('loginPass',this)">👁</span>
+    </div>
+    <div style="text-align:right;margin-bottom:28px;">
+      <span onclick="doForgotPassword()" style="font-size:13px;color:var(--yellow);cursor:pointer;">Forgot password?</span>
+    </div>
+    <div class="auth-error" id="loginError"></div>
+    <button class="btn-primary" style="margin-bottom:16px;" onclick="doLogin()">Sign In</button>
+    <div style="text-align:center;font-size:13px;color:var(--muted);">
+      Don't have an account? <span onclick="showScreen('signup')" style="color:var(--yellow);cursor:pointer;font-weight:600;">Sign up</span>
+    </div>
+    <!-- Divider -->
+    <div style="display:flex;align-items:center;gap:12px;margin:28px 0;">
+      <div style="flex:1;height:1px;background:var(--border);"></div>
+      <span style="font-size:12px;color:var(--muted);">or continue with</span>
+      <div style="flex:1;height:1px;background:var(--border);"></div>
+    </div>
+    <div style="display:flex;gap:12px;">
+      <button class="social-btn" onclick="doGoogleSignIn()">🔵 Google</button>
+      <button class="social-btn" onclick="doAppleSignIn()">🍎 Apple</button>
+    </div>
+</div>
+
+<!-- ══════════ SIGN UP ══════════ -->
+<div id="signup" class="screen" style="background:linear-gradient(180deg,#0A1535 0%,#0D1E40 60%,#0A1020 100%);padding:40px 28px 40px;">
+
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:32px;">
+      <span onclick="showScreen('splash')" style="font-size:22px;color:var(--yellow);cursor:pointer;">←</span>
+      <span style="font-size:15px;color:var(--muted);">Back</span>
+    </div>
+    <div style="margin-bottom:28px;">
+      <div class="brand-name" style="font-size:28px;margin-bottom:6px;">Create account ✨</div>
+      <div style="font-size:14px;color:var(--muted);">Join Lum<span style="color:var(--yellow);">@</span>T — it's free</div>
+    </div>
+    <div class="auth-field-wrap">
+      <label class="auth-label">Full name</label>
+      <input class="auth-input" id="signupName" type="text" placeholder="e.g. Jordan Maverick">
+    </div>
+    <div class="auth-field-wrap">
+      <label class="auth-label">Phone number</label>
+      <div style="display:flex;gap:8px;">
+        <select class="auth-input" id="signupCountry" style="width:90px;flex-shrink:0;padding:12px 8px;">
+          <option value="+254">🇰🇪 +254</option>
+          <option value="+1">🇺🇸 +1</option>
+          <option value="+44">🇬🇧 +44</option>
+          <option value="+234">🇳🇬 +234</option>
+          <option value="+255">🇹🇿 +255</option>
+          <option value="+256">🇺🇬 +256</option>
+          <option value="+27">🇿🇦 +27</option>
+        </select>
+        <input class="auth-input" id="signupPhone" type="tel" placeholder="7XX XXX XXX" style="flex:1;">
+      </div>
+    </div>
+    <div class="auth-field-wrap">
+      <label class="auth-label">Email address</label>
+      <input class="auth-input" id="signupEmail" type="email" placeholder="you@example.com">
+    </div>
+    <div class="auth-field-wrap" style="position:relative;">
+      <label class="auth-label">Password</label>
+      <input class="auth-input" id="signupPass" type="password" placeholder="Min. 8 characters" oninput="checkPassStrength(this.value)">
+      <span class="pass-toggle" onclick="togglePass('signupPass',this)">👁</span>
+    </div>
+    <!-- Password strength -->
+    <div style="margin-bottom:16px;">
+      <div style="display:flex;gap:4px;margin-bottom:4px;">
+        <div class="strength-bar" id="sb1"></div>
+        <div class="strength-bar" id="sb2"></div>
+        <div class="strength-bar" id="sb3"></div>
+        <div class="strength-bar" id="sb4"></div>
+      </div>
+      <div style="font-size:11px;color:var(--muted);" id="strengthLabel"></div>
+    </div>
+    <div class="auth-field-wrap" style="position:relative;">
+      <label class="auth-label">Confirm password</label>
+      <input class="auth-input" id="signupPass2" type="password" placeholder="Re-enter password">
+      <span class="pass-toggle" onclick="togglePass('signupPass2',this)">👁</span>
+    </div>
+    <!-- Terms -->
+    <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:20px;">
+      <input type="checkbox" id="agreeTerms" style="margin-top:3px;accent-color:var(--yellow);width:16px;height:16px;cursor:pointer;">
+      <label for="agreeTerms" style="font-size:13px;color:var(--muted);cursor:pointer;">I agree to the <span style="color:var(--yellow);">Terms of Service</span> and <span style="color:var(--yellow);">Privacy Policy</span></label>
+    </div>
+    <div class="auth-error" id="signupError"></div>
+    <button class="btn-primary" style="margin-bottom:16px;" onclick="doSignup()">Create Account</button>
+    <div style="text-align:center;font-size:13px;color:var(--muted);">
+      Already have an account? <span onclick="showScreen('login')" style="color:var(--yellow);cursor:pointer;font-weight:600;">Sign in</span>
+    </div>
+</div>
+
+<!-- ══════════ CHATS ══════════ -->
+<div id="chats" class="screen">
+  <div class="top-header" style="position:relative;">
+    <div class="header-title">Lum<span class="at">@</span>T</div>
+    <div class="header-icons"><span class="h-icon">📷</span><span class="h-icon" onclick="toggleChatsMenu()">⋮</span></div>
+    <div id="chatsMenu" style="display:none;position:absolute;top:44px;right:12px;background:var(--card);border:1px solid var(--border);border-radius:14px;z-index:500;min-width:180px;box-shadow:0 8px 24px rgba(0,0,0,0.4);overflow:hidden;">
+      <div onclick="openNewGroup()" style="padding:14px 18px;font-size:14px;display:flex;align-items:center;gap:12px;cursor:pointer;">👥 New group</div>
+      <div onclick="toggleChatsMenu()" style="padding:14px 18px;font-size:14px;display:flex;align-items:center;gap:12px;cursor:pointer;border-top:1px solid var(--border);color:var(--muted);">✕ Cancel</div>
+    </div>
+  </div>
+  <div class="search-wrap">
+    <div class="search-box">
+      <span>🔍</span>
+      <input id="chatSearch" placeholder="Search or start new chat" style="background:none;border:none;outline:none;color:var(--white);font-size:14px;flex:1;width:100%;" oninput="searchUsers(this.value)">
+    </div>
+  </div>
+  <!-- Search results -->
+  <div id="searchResults" style="display:none;background:var(--dark);border-bottom:1px solid var(--border);max-height:200px;overflow-y:auto;"></div>
+  <div class="filter-row">
+    <button class="filter-chip active" onclick="setFilter(this)">All</button>
+    <button class="filter-chip" onclick="setFilter(this)">Unread</button>
+    <button class="filter-chip" onclick="setFilter(this)">Groups</button>
+    <button class="filter-chip" onclick="setFilter(this)">Favorites</button>
+  </div>
+  <!-- Real chat list from Firestore -->
+  <div class="chat-list" id="chatList">
+    <div style="text-align:center;padding:40px 20px;color:var(--muted);">
+      <div style="font-size:40px;margin-bottom:12px;">💬</div>
+      <div style="font-size:15px;font-weight:600;margin-bottom:6px;">No chats yet</div>
+      <div style="font-size:13px;">Search for someone above to start chatting</div>
+    </div>
+  </div>
+  <div class="fab" id="newChatFab" onclick="document.getElementById('chatSearch').focus()">✏️</div>
+</div>
+
+<!-- ══════════ MESSAGE THREAD ══════════ -->
+<div id="msgscreen" class="screen">
+  <div class="chat-header">
+    <span class="back-btn" onclick="goBack()">←</span>
+    <div class="cr-avatar" id="msgAvatar" style="width:38px;height:38px;font-size:14px;cursor:pointer;" onclick="openGroupInfoIfGroup()">D</div>
+    <div class="ch-info" style="cursor:pointer;" onclick="openGroupInfoIfGroup()">
+      <div class="ch-name" id="msgName">Dorcus</div>
+      <div class="ch-status" id="msgStatus">online</div>
+    </div>
+    <div class="ch-icons" id="msgHeaderIcons">
+      <span class="ch-icon" onclick="toggleMsgSearch()">🔍</span>
+      <span class="ch-icon" id="videoCallIcon" onclick="startRealCall('video')" title="Video call">📹</span>
+      <span class="ch-icon" id="voiceCallIcon" onclick="startRealCall('voice')" title="Voice call">📞</span>
+      <span class="ch-icon" onclick="showChatMenu()">⋮</span>
+    </div>
+  </div>
+
+  <!-- Message search bar (hidden by default) -->
+  <div id="msgSearchBar" style="display:none;padding:8px 14px;background:var(--dark);border-bottom:1px solid var(--border);">
+    <div style="display:flex;align-items:center;gap:8px;">
+      <input id="msgSearchInput" placeholder="🔍 Search messages..." oninput="searchMessages(this.value)"
+        style="flex:1;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:9px 14px;color:var(--white);font-size:14px;outline:none;">
+      <span onclick="closeMsgSearch()" style="color:var(--muted);font-size:20px;cursor:pointer;padding:4px;">✕</span>
+    </div>
+    <div id="msgSearchCount" style="font-size:12px;color:var(--muted);margin-top:6px;padding-left:4px;display:none;"></div>
+  </div>
+  <div id="chatMenu" style="display:none;position:absolute;top:60px;right:12px;background:var(--card);border:1px solid var(--border);border-radius:14px;z-index:500;min-width:180px;box-shadow:0 8px 24px rgba(0,0,0,0.4);overflow:hidden;">
+    <div onclick="blockUser()" style="padding:14px 18px;font-size:14px;display:flex;align-items:center;gap:12px;cursor:pointer;color:#EF4444;">🚫 Block user</div>
+    <div onclick="clearChat()" style="padding:14px 18px;font-size:14px;display:flex;align-items:center;gap:12px;cursor:pointer;border-top:1px solid var(--border);">🗑️ Clear chat</div>
+    <div onclick="hideChatMenu()" style="padding:14px 18px;font-size:14px;display:flex;align-items:center;gap:12px;cursor:pointer;border-top:1px solid var(--border);color:var(--muted);">✕ Cancel</div>
+  </div>
+  <div class="messages-area" id="messagesArea">
+    <!-- Messages load dynamically from Firestore -->
+  </div>
+  <!-- Normal input bar -->
+  <div class="msg-input-bar" id="normalInputBar">
+    <span style="font-size:22px;cursor:pointer;">😊</span>
+    <input class="msg-input" id="msgInput" placeholder="Type a message" oninput="toggleSendBtn()" onkeydown="sendMessage(event)">
+    <input type="file" id="imgAttachInput" accept="image/*" style="display:none" onchange="sendImageMessage(this)">
+    <span style="font-size:22px;cursor:pointer;color:var(--muted)" onclick="document.getElementById('imgAttachInput').click()">📎</span>
+    <button class="send-btn" id="sendBtn" onclick="sendMessageBtn()">➤</button>
+    <button class="mic-btn" id="micBtn" onclick="startRecording()">🎤</button>
+  </div>
+  <!-- Recording bar -->
+  <div class="recording-bar" id="recordingBar">
+    <div class="rec-dot"></div>
+    <span class="rec-time" id="recTime">0:00</span>
+    <svg class="rec-wave" id="recWave" viewBox="0 0 200 36">
+      <polyline id="recWaveLine" points="0,18 200,18" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="2"/>
+    </svg>
+    <span class="rec-cancel" onclick="cancelRecording()">✕ Cancel</span>
+    <button class="rec-send" onclick="sendVoiceNote()">➤</button>
+  </div>
+</div>
+
+<!-- ══════════ NEW GROUP ══════════ -->
+<div id="newgroup" class="screen">
+  <div class="chat-header">
+    <span class="back-btn" onclick="closeNewGroupScreen()">←</span>
+    <div class="ch-info"><div class="ch-name">New group</div><div class="ch-status" id="groupSelCount">0 selected</div></div>
+  </div>
+  <div style="padding:14px 16px;border-bottom:1px solid var(--border);">
+    <input id="newGroupName" placeholder="Group name" maxlength="60"
+      style="width:100%;background:var(--darker);border:1px solid var(--border);border-radius:12px;padding:12px 14px;color:var(--white);font-size:15px;outline:none;box-sizing:border-box;">
+  </div>
+  <div style="padding:10px 16px 4px;font-size:12px;color:var(--muted);">Add at least 2 friends to start a group</div>
+  <div id="newGroupList" style="flex:1;overflow-y:auto;">
+    <div style="text-align:center;padding:40px 20px;color:var(--muted);">
+      <div style="font-size:28px;">⏳</div><div style="font-size:14px;margin-top:8px;">Loading friends...</div>
+    </div>
+  </div>
+  <div style="padding:14px 16px;border-top:1px solid var(--border);">
+    <button onclick="createGroupChat()" class="splash-cta" style="margin-bottom:0;">Create group</button>
+  </div>
+</div>
+
+<!-- ══════════ GROUP INFO ══════════ -->
+<div id="groupinfo" class="screen">
+  <div class="top-header">
+    <span class="back-btn" onclick="showScreen('msgscreen')">←</span>
+    <div class="header-title">Group info</div>
+  </div>
+  <div style="display:flex;flex-direction:column;align-items:center;padding:24px 16px;border-bottom:1px solid var(--border);">
+    <div class="cr-avatar av-purple" style="width:80px;height:80px;font-size:30px;">👥</div>
+    <div id="groupInfoName" style="font-weight:700;font-size:18px;margin-top:12px;"></div>
+    <div id="groupInfoMeta" style="font-size:13px;color:var(--muted);margin-top:4px;"></div>
+  </div>
+  <div style="padding:14px 16px 6px;font-size:13px;font-weight:700;color:var(--muted);display:flex;justify-content:space-between;align-items:center;" id="groupMembersLabel">
+    <span>Members</span>
+    <span onclick="openAddGroupMembers()" style="color:var(--yellow);font-weight:700;cursor:pointer;font-size:13px;">➕ Add</span>
+  </div>
+  <div id="groupMembersList" style="flex:1;overflow-y:auto;"></div>
+  <div style="padding:16px;border-top:1px solid var(--border);">
+    <button onclick="leaveGroupChat()" style="width:100%;padding:14px;background:rgba(255,0,0,0.1);border:1px solid rgba(239,68,68,0.4);border-radius:14px;color:#EF4444;font-weight:700;font-size:15px;cursor:pointer;">🚪 Leave group</button>
+  </div>
+</div>
+
+<!-- ══════════ STATUS ══════════ -->
+<div id="status" class="screen">
+  <div class="top-header">
+    <div class="header-title">Status</div>
+    <div class="header-icons"><span class="h-icon" onclick="showAddStatus()">✏️</span></div>
+  </div>
+  <div style="overflow-y:auto;flex:1;">
+
+    <!-- My status row -->
+    <div class="my-status-row" onclick="showAddStatus()" style="cursor:pointer;">
+      <div class="status-ring" id="myStatusRing">
+        <div class="cr-avatar av-blue" id="myStatusAvatar" style="width:48px;height:48px;font-size:17px;overflow:hidden;position:relative;">
+          <span id="myStatusInitials">?</span>
+        </div>
+        <div class="status-plus">+</div>
+      </div>
+      <div>
+        <div style="font-weight:700;font-size:15px;" id="myStatusName">My Status</div>
+        <div style="font-size:12px;color:var(--muted);" id="myStatusHint">Tap to add status update</div>
+      </div>
+    </div>
+
+    <!-- Add status box -->
+    <div id="addStatusBox" style="display:none;background:var(--card);margin:0 14px 12px;border-radius:18px;padding:16px;border:1px solid var(--border);">
+      <!-- Photo preview -->
+      <div id="statusPhotoPreview" style="display:none;margin-bottom:10px;position:relative;">
+        <img id="statusPhotoImg" style="width:100%;max-height:200px;object-fit:cover;border-radius:12px;display:block;">
+        <span onclick="removeStatusPhoto()" style="position:absolute;top:6px;right:6px;background:rgba(0,0,0,0.6);color:#fff;border-radius:50%;width:26px;height:26px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;">✕</span>
+      </div>
+      <!-- Text input -->
+      <textarea id="statusText" placeholder="What's on your mind?" style="width:100%;background:var(--darker);border:1px solid var(--border);border-radius:12px;padding:10px;color:var(--white);font-size:14px;resize:none;height:70px;outline:none;font-family:inherit;box-sizing:border-box;"></textarea>
+      <!-- Action row -->
+      <div style="display:flex;gap:8px;margin-top:10px;align-items:center;">
+        <input type="file" id="statusPhotoInput" accept="image/*" style="display:none" onchange="previewStatusPhoto(this)">
+        <button onclick="document.getElementById('statusPhotoInput').click()" style="padding:9px 14px;background:rgba(255,255,255,0.08);border:none;border-radius:10px;color:var(--white);font-size:13px;cursor:pointer;">📷 Photo</button>
+        <button onclick="postStatus()" style="flex:1;padding:10px;background:var(--green);border:none;border-radius:10px;color:#000;font-weight:700;font-size:14px;cursor:pointer;">Post</button>
+        <button onclick="document.getElementById('addStatusBox').style.display='none'" style="padding:9px 14px;background:rgba(255,255,255,0.08);border:none;border-radius:10px;color:var(--muted);font-size:13px;cursor:pointer;">Cancel</button>
+      </div>
+    </div>
+
+    <!-- Status viewer overlay -->
+    <div id="statusViewer" style="display:none;position:fixed;inset:0;background:#000;z-index:9999;flex-direction:column;">
+      <div style="display:flex;align-items:center;gap:12px;padding:16px;">
+        <div class="cr-avatar av-blue" id="svAvatar" style="width:40px;height:40px;font-size:14px;"></div>
+        <div>
+          <div style="font-weight:700;color:#fff;font-size:14px;" id="svName"></div>
+          <div style="font-size:12px;color:rgba(255,255,255,0.6);" id="svTime"></div>
+        </div>
+        <span onclick="closeStatusViewer()" style="margin-left:auto;color:#fff;font-size:24px;cursor:pointer;">✕</span>
+      </div>
+      <div style="flex:1;display:flex;align-items:center;justify-content:center;padding:0 16px;">
+        <img id="svPhoto" style="max-width:100%;max-height:70vh;object-fit:contain;border-radius:12px;display:none;">
+      </div>
+      <div style="padding:20px 24px;background:rgba(0,0,0,0.8);">
+        <div style="color:#fff;font-size:15px;text-align:center;" id="svText"></div>
+      </div>
+    </div>
+
+    <!-- Status list -->
+    <div id="statusList" style="text-align:center;padding:40px 20px;color:var(--muted);">
+      <div style="font-size:36px;margin-bottom:10px;">🔵</div>
+      <div style="font-size:14px;">No recent status updates</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ FRIEND REQUESTS ══════════ -->
+<div id="requests" class="screen">
+  <div class="top-header">
+    <div class="header-title">Friend Requests</div>
+  </div>
+  <div id="requestsList" style="overflow-y:auto;flex:1;">
+    <div style="text-align:center;padding:40px 20px;color:var(--muted);">
+      <div style="font-size:36px;margin-bottom:10px;">🤝</div>
+      <div style="font-size:14px;">No pending friend requests</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ CALLS ══════════ -->
+<div id="calls" class="screen">
+  <div class="top-header">
+    <div class="header-title">Calls</div>
+    <div class="header-icons"><span class="h-icon">🔍</span><span class="h-icon">⋮</span></div>
+  </div>
+  <div style="overflow-y:auto;flex:1;" id="callLogList">
+    <div style="text-align:center;padding:40px 20px;color:var(--muted);">
+      <div style="font-size:36px;margin-bottom:10px;">📞</div>
+      <div style="font-size:15px;font-weight:600;margin-bottom:6px;">No recent calls</div>
+      <div style="font-size:13px;">Your call history will appear here</div>
+    </div>
+  </div>
+  <div class="new-call-fab" onclick="goToPeopleToCall()">📞</div>
+</div>
+
+<!-- ══════════ COMMUNITIES ══════════ -->
+<div id="communities" class="screen">
+  <div class="top-header">
+    <div class="header-title">People</div>
+    <div class="header-icons"><span class="h-icon" onclick="loadPeople()">🔄</span></div>
+  </div>
+  <!-- Search bar -->
+  <div style="padding:10px 16px 6px;">
+    <input id="peopleSearch" placeholder="🔍 Search by name or phone..." oninput="filterPeople(this.value)"
+      style="width:100%;background:var(--darker);border:1px solid var(--border);border-radius:12px;padding:10px 14px;color:var(--white);font-size:14px;outline:none;box-sizing:border-box;">
+  </div>
+  <!-- People list -->
+  <div id="peopleList" style="flex:1;overflow-y:auto;padding-bottom:80px;">
+    <div style="text-align:center;padding:40px 20px;color:var(--muted);">
+      <div style="font-size:36px;margin-bottom:10px;">👥</div>
+      <div style="font-size:14px;">Loading people...</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ AI SCREEN ══════════ -->
+<div id="aiscreen" class="screen">
+  <div class="chat-header">
+    <span class="back-btn" onclick="closeAI()">←</span>
+    <div style="width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--navy),#7B1FA2);display:flex;align-items:center;justify-content:center;font-size:16px;">✨</div>
+    <div class="ch-info"><div class="ch-name">Lum@T AI</div><div class="ch-status">Always here for you</div></div>
+    <div class="ch-icons"><span class="ch-icon">⋮</span></div>
+  </div>
+  <div class="ai-messages-wrap" id="aiMsgs">
+    <div class="ai-bubble-row">
+      <div class="ai-orb-small">✨</div>
+      <div class="ai-bub">Hi! I'm your Lum@T AI Assistant 👋<br>I'm here to help — ask me anything!</div>
+    </div>
+  </div>
+  <div class="msg-input-bar">
+    <span style="font-size:22px;cursor:pointer;">😊</span>
+    <input class="msg-input" id="aiInput" placeholder="Ask me anything…" onkeydown="sendAI(event)">
+    <button class="mic-btn" style="background:linear-gradient(135deg,var(--navy),#7B1FA2);" onclick="sendAI({key:'Enter'})">✨</button>
+  </div>
+</div>
+
+<!-- ══════════ SETTINGS ══════════ -->
+<div id="settings" class="screen">
+  <div class="top-header">
+    <div class="header-title">Settings</div>
+    <div class="header-icons"><span class="h-icon">🔍</span></div>
+  </div>
+  <div class="settings-list">
+    <input type="file" id="profilePicInput" accept="image/*" onchange="uploadProfilePic(this)" capture="user">
+
+    <!-- WhatsApp-style profile section -->
+    <div style="display:flex;flex-direction:column;align-items:center;padding:28px 16px 20px;border-bottom:1px solid var(--border);background:linear-gradient(180deg,rgba(13,71,161,0.15) 0%,transparent 100%);">
+      <!-- Avatar with camera overlay -->
+      <div style="position:relative;margin-bottom:14px;" onclick="showProfilePicOptions()">
+        <div id="settingsAvatar" style="width:110px;height:110px;border-radius:50%;background:linear-gradient(135deg,var(--navy),#1565C0);display:flex;align-items:center;justify-content:center;font-size:42px;font-weight:700;overflow:hidden;position:relative;box-shadow:0 4px 20px rgba(0,0,0,0.4);border:3px solid rgba(255,255,255,0.1);">
+          <span id="settingsAvatarInitials">?</span>
+        </div>
+        <!-- Camera badge -->
+        <div style="position:absolute;bottom:4px;right:4px;width:34px;height:34px;background:var(--green);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;border:3px solid var(--dark);box-shadow:0 2px 8px rgba(0,0,0,0.3);">📷</div>
+      </div>
+      <!-- Name + bio with edit button -->
+      <div style="font-weight:800;font-size:20px;margin-bottom:2px;" id="settingsName">Loading...</div>
+      <div style="font-size:13px;color:var(--muted);" id="settingsEmail">...</div>
+      <div style="font-size:13px;color:rgba(255,255,255,0.5);margin-top:4px;font-style:italic;" id="settingsBio">Hey there! I am using Lum@T</div>
+      <button onclick="openEditProfile()" style="margin-top:12px;padding:8px 20px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:20px;color:var(--white);font-size:13px;font-weight:600;cursor:pointer;">✏️ Edit Profile</button>
+    </div>
+    <div class="settings-section">Account</div>
+    <div class="settings-row"><div class="settings-icon" style="background:rgba(13,71,161,0.2);">🔑</div><span class="settings-label">Account</span><span class="settings-arrow">›</span></div>
+    <div class="settings-row"><div class="settings-icon" style="background:rgba(37,211,102,0.2);">🔒</div><span class="settings-label">Privacy</span><span class="settings-arrow">›</span></div>
+    <div class="settings-row"><div class="settings-icon" style="background:rgba(255,193,7,0.2);">🔔</div><span class="settings-label">Notifications</span><span class="settings-arrow">›</span></div>
+    <div class="settings-section">App</div>
+    <div class="settings-row"><div class="settings-icon" style="background:rgba(76,175,80,0.2);">💬</div><span class="settings-label">Chats</span><span class="settings-arrow">›</span></div>
+    <div class="settings-row"><div class="settings-icon" style="background:rgba(156,39,176,0.2);">📦</div><span class="settings-label">Storage & Data</span><span class="settings-arrow">›</span></div>
+    <div class="settings-row"><div class="settings-icon" style="background:rgba(33,150,243,0.2);">❓</div><span class="settings-label">Help</span><span class="settings-arrow">›</span></div>
+    <div class="settings-row" onclick="showScreen('blocked');if(window._loadBlockedUsers)window._loadBlockedUsers();"><div class="settings-icon" style="background:rgba(239,68,68,0.15);">🚫</div><span class="settings-label">Blocked Users</span><span class="settings-arrow">›</span></div>
+    <div class="settings-row" onclick="openAI()"><div class="settings-icon" style="background:rgba(255,193,7,0.15);">✨</div><span class="settings-label">Lum@T AI Assistant</span><span class="settings-arrow" style="color:var(--yellow);">›</span></div>
+    <div class="settings-row" onclick="showScreen('about')"><div class="settings-icon" style="background:rgba(59,130,246,0.15);">ℹ️</div><span class="settings-label">About Lum@T</span><span class="settings-arrow">›</span></div>
+    <div class="settings-section">Session</div>
+    <div class="settings-row" onclick="doLogout()" style="cursor:pointer;">
+      <div class="settings-icon" style="background:rgba(239,68,68,0.15);">🚪</div>
+      <span class="settings-label" style="color:#EF4444;">Log Out</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ DELETE MESSAGE SHEET ══════════ -->
+<div id="deleteSheet" style="display:none;position:fixed;inset:0;z-index:9000;background:rgba(0,0,0,0.6);" onclick="closeDeleteSheet()">
+  <div onclick="event.stopPropagation()" style="position:absolute;bottom:0;left:0;right:0;background:var(--card);border-radius:24px 24px 0 0;padding:20px 0 40px;">
+    <div style="text-align:center;font-weight:700;font-size:15px;padding:0 0 14px;border-bottom:1px solid var(--border);margin:0 20px 8px;">Message Options</div>
+    <div id="deleteForMe" onclick="deleteMessage('me')" style="display:flex;align-items:center;gap:16px;padding:14px 24px;cursor:pointer;">
+      <div style="width:42px;height:42px;border-radius:50%;background:rgba(239,68,68,0.15);display:flex;align-items:center;justify-content:center;font-size:20px;">🗑️</div>
+      <div><div style="font-size:15px;font-weight:600;">Delete for me</div><div style="font-size:12px;color:var(--muted);">Remove from your view only</div></div>
+    </div>
+    <div id="deleteForAll" onclick="deleteMessage('all')" style="display:flex;align-items:center;gap:16px;padding:14px 24px;cursor:pointer;border-top:1px solid var(--border);">
+      <div style="width:42px;height:42px;border-radius:50%;background:rgba(239,68,68,0.2);display:flex;align-items:center;justify-content:center;font-size:20px;">🗑️</div>
+      <div><div style="font-size:15px;font-weight:600;color:#EF4444;">Delete for everyone</div><div style="font-size:12px;color:var(--muted);">Remove from all devices</div></div>
+    </div>
+    <div onclick="closeDeleteSheet()" style="display:flex;align-items:center;gap:16px;padding:14px 24px;cursor:pointer;border-top:1px solid var(--border);">
+      <div style="width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:center;font-size:20px;">✕</div>
+      <span style="font-size:15px;color:var(--muted);">Cancel</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ BLOCK USER CONFIRMATION ══════════ -->
+<div id="blockConfirm" style="display:none;position:fixed;inset:0;z-index:9100;background:rgba(0,0,0,0.7);display:none;align-items:center;justify-content:center;padding:24px;">
+  <div style="background:var(--card);border-radius:20px;padding:28px 24px;width:100%;max-width:340px;border:1px solid var(--border);">
+    <div style="font-size:36px;text-align:center;margin-bottom:14px;">🚫</div>
+    <div style="font-weight:800;font-size:18px;text-align:center;margin-bottom:8px;">Block <span id="blockUserName">this user</span>?</div>
+    <div style="font-size:13px;color:var(--muted);text-align:center;line-height:1.6;margin-bottom:24px;">They won't be able to send you messages or see your status. You can unblock them anytime in Settings.</div>
+    <div style="display:flex;gap:10px;">
+      <button onclick="closeBlockConfirm()" style="flex:1;padding:13px;background:rgba(255,255,255,0.08);border:none;border-radius:12px;color:var(--white);font-size:14px;font-weight:600;cursor:pointer;">Cancel</button>
+      <button onclick="confirmBlock()" style="flex:1;padding:13px;background:#EF4444;border:none;border-radius:12px;color:#fff;font-size:14px;font-weight:700;cursor:pointer;">Block</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ BLOCKED USERS SCREEN ══════════ -->
+<div id="blocked" class="screen">
+  <div class="top-header">
+    <span onclick="showScreen('settings')" style="font-size:22px;cursor:pointer;padding:4px 8px;">←</span>
+    <div class="header-title">Blocked Users</div>
+  </div>
+  <div id="blockedList" style="flex:1;overflow-y:auto;padding:16px;">
+    <div style="text-align:center;padding:40px 20px;color:var(--muted);">
+      <div style="font-size:36px;margin-bottom:10px;">🚫</div>
+      <div style="font-size:14px;">No blocked users</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ ABOUT SCREEN ══════════ -->
+<div id="about" class="screen">
+  <div class="top-header">
+    <span onclick="showScreen('settings')" style="font-size:22px;cursor:pointer;padding:4px 8px;">←</span>
+    <div class="header-title">About Lum@T</div>
+  </div>
+  <div style="overflow-y:auto;flex:1;padding-bottom:40px;">
+
+    <!-- Logo & Version -->
+    <div style="display:flex;flex-direction:column;align-items:center;padding:36px 20px 28px;border-bottom:1px solid var(--border);background:linear-gradient(180deg,rgba(13,71,161,0.2) 0%,transparent 100%);">
+      <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:80px;height:80px;margin-bottom:14px;">
+        <defs><linearGradient id="aGrad" x1="15%" y1="0%" x2="85%" y2="100%"><stop offset="0%" stop-color="#FF4FA3"/><stop offset="50%" stop-color="#A855F7"/><stop offset="100%" stop-color="#3B82F6"/></linearGradient></defs>
+        <circle cx="60" cy="60" r="55" fill="#0A1535" stroke="url(#aGrad)" stroke-width="4.5"/>
+        <path d="M32 42 Q32 27 47 27 H75 Q90 27 90 42 V64 Q90 79 75 79 H61 L49 92 L49 79 H47 Q32 79 32 64 Z" fill="none" stroke="#FFC107" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round"/>
+        <circle cx="50" cy="53" r="4.3" fill="#FFC107"/>
+        <circle cx="61" cy="53" r="4.3" fill="#FFC107"/>
+        <circle cx="72" cy="53" r="4.3" fill="#FFC107"/>
+      </svg>
+      <div style="font-size:28px;font-weight:800;letter-spacing:1px;">Lum<span style="color:var(--yellow);">@</span>T</div>
+      <div style="font-size:13px;color:var(--muted);margin-top:4px;font-style:italic;">"I'm Closer Than You Think"</div>
+      <div style="margin-top:10px;background:rgba(37,211,102,0.1);border:1px solid rgba(37,211,102,0.3);border-radius:20px;padding:5px 16px;font-size:12px;color:var(--green);font-weight:600;">Version 1.0.0</div>
+    </div>
+
+    <!-- About section -->
+    <div style="padding:20px 20px 0;">
+      <div style="font-size:13px;color:var(--green);font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">About</div>
+      <div style="font-size:14px;color:rgba(255,255,255,0.8);line-height:1.7;">
+        Lum@T is a fast, secure, and reliable messaging app built for everyone. Connect with friends and family, share moments, and stay close no matter where you are.
+      </div>
+    </div>
+
+    <!-- Features -->
+    <div style="padding:20px;">
+      <div style="font-size:13px;color:var(--green);font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;">What You Can Do</div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        ${[['💬','Real-time messaging','Send and receive messages instantly'],
+           ['📷','Share photos','Share moments with friends'],
+           ['🎤','Voice notes','Send quick voice messages'],
+           ['📞','Voice & video calls','Talk face to face'],
+           ['⭕','Status updates','Share what\'s on your mind'],
+           ['🤖','AI Assistant','Get help from Lum@T AI'],
+           ['👥','People discovery','Find and connect with others']
+        ].map(([icon,title,desc])=>`
+        <div style="display:flex;align-items:center;gap:14px;padding:12px 14px;background:var(--card);border-radius:14px;border:1px solid var(--border);">
+          <span style="font-size:22px;">${icon}</span>
+          <div><div style="font-weight:600;font-size:14px;">${title}</div><div style="font-size:12px;color:var(--muted);margin-top:2px;">${desc}</div></div>
+        </div>`).join('')}
+      </div>
+    </div>
+
+    <!-- Terms of Service -->
+    <div style="padding:0 20px 20px;">
+      <div style="font-size:13px;color:var(--green);font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">Terms of Service</div>
+      <div style="background:var(--card);border-radius:14px;padding:16px;border:1px solid var(--border);font-size:13px;color:rgba(255,255,255,0.7);line-height:1.7;">
+        By using Lum@T, you agree to:<br><br>
+        <b style="color:#fff;">1. Acceptable Use</b><br>
+        You must not use Lum@T for illegal activities, harassment, spam, or sharing harmful content.<br><br>
+        <b style="color:#fff;">2. Privacy</b><br>
+        Your messages are stored securely. We do not sell your personal data to third parties.<br><br>
+        <b style="color:#fff;">3. Account</b><br>
+        You are responsible for keeping your account secure. Do not share your password.<br><br>
+        <b style="color:#fff;">4. Content</b><br>
+        You own the content you share. By sharing, you grant Lum@T permission to display it within the app.<br><br>
+        <b style="color:#fff;">5. Changes</b><br>
+        We may update these terms at any time. Continued use means you accept any changes.
+      </div>
+    </div>
+
+    <!-- Privacy Policy -->
+    <div style="padding:0 20px 20px;">
+      <div style="font-size:13px;color:var(--green);font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">Privacy Policy</div>
+      <div style="background:var(--card);border-radius:14px;padding:16px;border:1px solid var(--border);font-size:13px;color:rgba(255,255,255,0.7);line-height:1.7;">
+        <b style="color:#fff;">What we collect:</b> Your name, email, phone number, and messages you send.<br><br>
+        <b style="color:#fff;">How we use it:</b> To provide messaging services, show your profile to contacts, and improve the app.<br><br>
+        <b style="color:#fff;">Who sees it:</b> Only you and your contacts can see your messages. Profile info is visible to other Lum@T users.<br><br>
+        <b style="color:#fff;">Data storage:</b> Your data is stored securely using Google Firebase infrastructure.<br><br>
+        <b style="color:#fff;">Your rights:</b> You can delete your account and data at any time by contacting us.
+      </div>
+    </div>
+
+    <!-- Developer info -->
+    <div style="padding:0 20px 30px;">
+      <div style="background:var(--card);border-radius:14px;padding:16px;border:1px solid var(--border);text-align:center;">
+        <div style="font-size:13px;color:var(--muted);margin-bottom:4px;">Developed by</div>
+        <div style="font-weight:800;font-size:16px;">Digital Link Technologies</div>
+        <div style="font-size:13px;color:var(--muted);margin-top:2px;">Uganda 🇺🇬</div>
+        <div style="margin-top:12px;font-size:12px;color:var(--muted);">© 2025 Digital Link Technologies Uganda.<br>All rights reserved.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════ EDIT PROFILE SCREEN ══════════ -->
+<div id="editprofile" class="screen">
+  <div class="top-header">
+    <span onclick="closeEditProfile()" style="font-size:22px;cursor:pointer;padding:4px 8px;">✕</span>
+    <div class="header-title">Edit Profile</div>
+    <span onclick="saveProfile()" style="color:var(--green);font-weight:700;font-size:15px;cursor:pointer;padding:4px 8px;">Save</span>
+  </div>
+  <div style="overflow-y:auto;flex:1;padding:0 0 40px;">
+
+    <!-- Avatar centered -->
+    <div style="display:flex;justify-content:center;padding:28px 0 20px;">
+      <div style="position:relative;" onclick="showProfilePicOptions()">
+        <div id="editProfileAvatar" style="width:100px;height:100px;border-radius:50%;background:linear-gradient(135deg,var(--navy),#1565C0);display:flex;align-items:center;justify-content:center;font-size:38px;font-weight:700;overflow:hidden;position:relative;box-shadow:0 4px 16px rgba(0,0,0,0.4);">
+          <span id="editProfileInitials">?</span>
+        </div>
+        <div style="position:absolute;bottom:2px;right:2px;width:30px;height:30px;background:var(--green);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;border:3px solid var(--dark);">📷</div>
+      </div>
+    </div>
+
+    <!-- Name field -->
+    <div style="padding:0 16px 16px;">
+      <div style="font-size:12px;color:var(--green);font-weight:600;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">Your Name</div>
+      <div style="background:var(--card);border-radius:14px;padding:14px 16px;border:1px solid var(--border);display:flex;align-items:center;gap:10px;">
+        <input id="editNameInput" placeholder="Enter your name" maxlength="50"
+          style="flex:1;background:none;border:none;color:var(--white);font-size:16px;font-weight:600;outline:none;font-family:inherit;">
+        <span style="color:var(--muted);font-size:20px;">✏️</span>
+      </div>
+      <div style="font-size:11px;color:var(--muted);margin-top:6px;padding-left:4px;">This is your display name visible to everyone</div>
+    </div>
+
+    <!-- Bio/About field -->
+    <div style="padding:0 16px 16px;">
+      <div style="font-size:12px;color:var(--green);font-weight:600;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">About</div>
+      <div style="background:var(--card);border-radius:14px;padding:14px 16px;border:1px solid var(--border);">
+        <textarea id="editBioInput" placeholder="Write something about yourself..." maxlength="139" oninput="updateBioCount()"
+          style="width:100%;background:none;border:none;color:var(--white);font-size:15px;outline:none;font-family:inherit;resize:none;height:80px;box-sizing:border-box;line-height:1.5;"></textarea>
+        <div style="text-align:right;font-size:11px;color:var(--muted);" id="bioCharCount">0/139</div>
+      </div>
+    </div>
+
+    <!-- Quick bio suggestions -->
+    <div style="padding:0 16px;">
+      <div style="font-size:12px;color:var(--muted);margin-bottom:10px;">Quick suggestions:</div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;">
+        <span onclick="setBio(this)" style="padding:6px 14px;background:var(--card);border:1px solid var(--border);border-radius:20px;font-size:13px;cursor:pointer;">Hey there! I am using Lum@T 👋</span>
+        <span onclick="setBio(this)" style="padding:6px 14px;background:var(--card);border:1px solid var(--border);border-radius:20px;font-size:13px;cursor:pointer;">Available 📱</span>
+        <span onclick="setBio(this)" style="padding:6px 14px;background:var(--card);border:1px solid var(--border);border-radius:20px;font-size:13px;cursor:pointer;">Busy 🔴</span>
+        <span onclick="setBio(this)" style="padding:6px 14px;background:var(--card);border:1px solid var(--border);border-radius:20px;font-size:13px;cursor:pointer;">At work 💼</span>
+        <span onclick="setBio(this)" style="padding:6px 14px;background:var(--card);border:1px solid var(--border);border-radius:20px;font-size:13px;cursor:pointer;">Battery low 🔋</span>
+        <span onclick="setBio(this)" style="padding:6px 14px;background:var(--card);border:1px solid var(--border);border-radius:20px;font-size:13px;cursor:pointer;">In a meeting 🤝</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ PROFILE PIC OPTIONS SHEET ══════════ -->
+<div id="profilePicSheet" style="display:none;position:fixed;inset:0;z-index:9000;background:rgba(0,0,0,0.6);" onclick="closeProfilePicSheet()">
+  <div onclick="event.stopPropagation()" style="position:absolute;bottom:0;left:0;right:0;background:var(--card);border-radius:24px 24px 0 0;padding:20px 0 40px;">
+    <div style="text-align:center;font-weight:700;font-size:16px;padding:0 0 16px;border-bottom:1px solid var(--border);margin:0 20px 8px;">Profile Photo</div>
+    <div onclick="viewProfilePic()" style="display:flex;align-items:center;gap:16px;padding:14px 24px;cursor:pointer;">
+      <div style="width:42px;height:42px;border-radius:50%;background:rgba(13,71,161,0.2);display:flex;align-items:center;justify-content:center;font-size:20px;">👁️</div>
+      <span style="font-size:15px;font-weight:500;">View photo</span>
+    </div>
+    <div onclick="chooseFromGallery()" style="display:flex;align-items:center;gap:16px;padding:14px 24px;cursor:pointer;">
+      <div style="width:42px;height:42px;border-radius:50%;background:rgba(37,211,102,0.2);display:flex;align-items:center;justify-content:center;font-size:20px;">🖼️</div>
+      <span style="font-size:15px;font-weight:500;">Choose from gallery</span>
+    </div>
+    <div onclick="takePhoto()" style="display:flex;align-items:center;gap:16px;padding:14px 24px;cursor:pointer;">
+      <div style="width:42px;height:42px;border-radius:50%;background:rgba(255,193,7,0.2);display:flex;align-items:center;justify-content:center;font-size:20px;">📷</div>
+      <span style="font-size:15px;font-weight:500;">Take photo</span>
+    </div>
+    <div onclick="removeProfilePic()" style="display:flex;align-items:center;gap:16px;padding:14px 24px;cursor:pointer;">
+      <div style="width:42px;height:42px;border-radius:50%;background:rgba(239,68,68,0.15);display:flex;align-items:center;justify-content:center;font-size:20px;">🗑️</div>
+      <span style="font-size:15px;font-weight:500;color:#EF4444;">Remove photo</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ PROFILE PIC FULL VIEWER ══════════ -->
+<div id="profilePicViewer" style="display:none;position:fixed;inset:0;z-index:9500;background:#000;flex-direction:column;">
+  <div style="display:flex;align-items:center;padding:16px;gap:12px;">
+    <span onclick="document.getElementById('profilePicViewer').style.display='none'" style="color:#fff;font-size:24px;cursor:pointer;">✕</span>
+    <span style="color:#fff;font-weight:700;font-size:16px;" id="pvName">Profile Photo</span>
+    <span onclick="chooseFromGallery()" style="margin-left:auto;color:var(--green);font-size:13px;font-weight:600;cursor:pointer;">✏️ Edit</span>
+  </div>
+  <div style="flex:1;display:flex;align-items:center;justify-content:center;">
+    <div id="pvInitials" style="width:220px;height:220px;border-radius:50%;background:linear-gradient(135deg,var(--navy),#1565C0);display:flex;align-items:center;justify-content:center;font-size:80px;font-weight:700;"></div>
+    <img id="pvPhoto" style="max-width:100%;max-height:80vh;object-fit:contain;border-radius:0;display:none;">
+  </div>
+</div>
+
+<!-- ══════════ BOTTOM TABS ══════════ -->
+<div class="bottom-tabs" id="bottomTabs" style="display:none;">
+  <div class="tab active" onclick="switchTab('chats',this)"><span class="tab-icon">💬</span><span>Chats</span></div>
+  <div class="tab" onclick="switchTab('status',this);if(window._loadStatuses)window._loadStatuses();"><span class="tab-icon">⭕</span><span>Status</span></div>
+  <div class="tab" onclick="switchTab('calls',this);if(window._loadCallLog)window._loadCallLog();" style="position:relative;">
+    <span class="tab-icon">📞</span><span>Calls</span>
+  </div>
+  <div class="tab" onclick="switchTab('requests',this);if(window._loadFriendRequests)window._loadFriendRequests();" style="position:relative;">
+    <span class="tab-icon">🤝</span><span>Requests</span>
+    <span id="requestsBadge" style="display:none;position:absolute;top:4px;right:8px;background:red;color:#fff;border-radius:10px;font-size:10px;font-weight:700;width:16px;height:16px;align-items:center;justify-content:center;">0</span>
+  </div>
+  <div class="tab" onclick="switchTab('communities',this);if(window._loadPeople)window._loadPeople();"><span class="tab-icon">👥</span><span>People</span></div>
+  <div class="tab" onclick="switchTab('settings',this)"><span class="tab-icon">⚙️</span><span>Settings</span></div>
+</div>
+
+<!-- ══════════ INCOMING CALL OVERLAY ══════════ -->
+<div id="incomingCall">
+  <div style="text-align:center;">
+    <div style="font-size:13px;color:var(--muted);margin-bottom:8px;" id="icTypeLabel">Lum@T Voice Call</div>
+    <div class="ic-ripple-wrap">
+      <div class="ic-ripple"></div>
+      <div class="ic-ripple"></div>
+      <div class="ic-ripple"></div>
+      <div class="ic-avatar av-blue" id="icAvatar">X</div>
+    </div>
+    <div class="ic-name" id="icName">Xavier</div>
+    <div class="ic-label">Incoming call…</div>
+  </div>
+  <div style="display:flex;flex-direction:column;align-items:center;gap:12px;">
+    <button class="ic-msg-btn" onclick="showToast('📨 Message sent')">Reply with message</button>
+    <div class="ic-actions">
+      <div class="ic-btn ic-decline" onclick="declineCall()">
+        <div class="ic-btn-circle">📵</div>
+        <span class="ic-btn-label">Decline</span>
+      </div>
+      <div class="ic-btn ic-accept" onclick="acceptCall()">
+        <div class="ic-btn-circle">📞</div>
+        <span class="ic-btn-label">Accept</span>
+      </div>
+    </div>
+    <div class="ic-swipe-hint">Swipe up to answer · Swipe down to decline</div>
+  </div>
+</div>
+
+<!-- ══════════ ACTIVE VOICE CALL OVERLAY ══════════ -->
+<div id="activeCall">
+  <span class="ac-back" onclick="endCall()">↙</span>
+  <div class="ac-name" id="acName">Dorcus</div>
+  <div class="ac-timer" id="acTimer">0:00</div>
+  <div class="ac-avatar-wrap">
+    <div class="ac-signal-ring"></div>
+    <div class="ac-avatar av-blue" id="acAvatar">D</div>
+  </div>
+  <svg class="ac-wave-bar" viewBox="0 0 300 48" id="acWaveSvg">
+    <polyline id="acWaveLine" points="0,24 300,24" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="2"/>
+  </svg>
+  <div class="ac-controls">
+    <div class="ac-ctrl" onclick="toggleMute(this,'ac-ctrl-btn')">
+      <div class="ac-ctrl-btn">🔇</div>
+      <span class="ac-ctrl-label">Mute</span>
+    </div>
+    <div class="ac-ctrl" onclick="toggleCtrl(this,'ac-ctrl-btn')">
+      <div class="ac-ctrl-btn">🔊</div>
+      <span class="ac-ctrl-label">Speaker</span>
+    </div>
+    <div class="ac-ctrl" onclick="toggleCtrl(this,'ac-ctrl-btn')">
+      <div class="ac-ctrl-btn">⌨️</div>
+      <span class="ac-ctrl-label">Keypad</span>
+    </div>
+    <div class="ac-ctrl" onclick="toggleCtrl(this,'ac-ctrl-btn')">
+      <div class="ac-ctrl-btn">📹</div>
+      <span class="ac-ctrl-label">Video</span>
+    </div>
+    <div class="ac-ctrl" onclick="toggleCtrl(this,'ac-ctrl-btn')">
+      <div class="ac-ctrl-btn">🎙️</div>
+      <span class="ac-ctrl-label">Hold</span>
+    </div>
+    <div class="ac-ctrl" onclick="toggleCtrl(this,'ac-ctrl-btn')">
+      <div class="ac-ctrl-btn">➕</div>
+      <span class="ac-ctrl-label">Add</span>
+    </div>
+  </div>
+  <div class="ac-end-btn" onclick="endCall()">📵</div>
+</div>
+
+<!-- ══════════ VIDEO CALL OVERLAY ══════════ -->
+<div id="videoCall">
+  <div class="vc-remote">
+    <div class="vc-remote-avatar av-blue" id="vcAvatar">D</div>
+    <div class="vc-self">👤</div>
+    <div class="vc-name-overlay">
+      <div class="vc-name" id="vcName">Dorcus</div>
+      <div class="vc-timer" id="vcTimer">0:00</div>
+    </div>
+  </div>
+  <div class="vc-controls">
+    <div class="vc-ctrl" onclick="toggleMute(this)">
+      <div class="vc-ctrl-btn">🔇</div>
+      <span class="vc-ctrl-label">Mute</span>
+    </div>
+    <div class="vc-ctrl" onclick="toggleCamera(this)">
+      <div class="vc-ctrl-btn">📷</div>
+      <span class="vc-ctrl-label">Camera</span>
+    </div>
+    <div class="vc-end-btn" onclick="endVideoCall()">📵</div>
+    <div class="vc-ctrl" onclick="toggleVcCtrl(this)">
+      <div class="vc-ctrl-btn">🔊</div>
+      <span class="vc-ctrl-label">Speaker</span>
+    </div>
+    <div class="vc-ctrl" onclick="toggleVcCtrl(this)">
+      <div class="vc-ctrl-btn">🔄</div>
+      <span class="vc-ctrl-label">Flip</span>
+    </div>
+  </div>
+</div>
+
+<script src="app-ui.js"></script>
+
+<!-- Hidden media elements for WebRTC -->
+<audio id="remoteAudio" autoplay playsinline style="display:none;"></audio>
+<video id="remoteVideo" autoplay playsinline style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:999;background:#000;"></video>
+<video id="localVideo"  autoplay playsinline muted style="display:none;position:fixed;bottom:100px;right:16px;width:100px;height:140px;object-fit:cover;z-index:1000;border-radius:12px;border:2px solid #fff;"></video>
+
+<!-- ── Firebase Real Auth + Real Messaging ────────────────────────── -->
+<script src="app-firebase.js"></script>
+</body>
+</html>
